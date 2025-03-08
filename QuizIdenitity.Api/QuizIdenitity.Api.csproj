@@ -20,6 +20,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\QuizIdentity.Application\QuizIdentity.Application.csproj" />
+    <ProjectReference Include="..\QuizIdentity.Infrastructure.Identity\QuizIdentity.Infrastructure.Identity.csproj" />
     <ProjectReference Include="..\QuizIdentity.Infrastructure.Persistence\QuizIdentity.Infrastructure.Persistence.csproj" />
   </ItemGroup>
 

@@ -1,11 +1,13 @@
 using QuizIdenitity.Api.Midllewares;
 using QuizIdentity.Application.Extensions;
+using QuizIdentity.Infrastructure.Identity.Extensions;
 using QuizIdentity.Infrastructure.Persistence.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
+builder.Services.AddIdentityInfrastructure();
 builder.Services.AddApplicationLayer();
 builder.Services.AddPersistenceInfrastructure(builder.Configuration);
 
