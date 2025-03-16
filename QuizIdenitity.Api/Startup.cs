@@ -1,7 +1,6 @@
 ﻿using System.Reflection;
 using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using QuizIdentity.Domain.Settings;
@@ -13,7 +12,7 @@ public static class Startup
     public static void AddAuthenticationAndAuthorization(this IServiceCollection services, WebApplicationBuilder builder)
     {
         var options = builder.Configuration.GetSection(JWTSettings.DefaultSection).Get<JWTSettings>();
-        var jwtKey = options.Secret;
+        var jwtKey = options.JwtKey;
         var issuer = options.Issuer;
         var audience = options.Audience;
 
@@ -25,7 +24,7 @@ public static class Startup
         }).AddJwtBearer(o =>
         {
             var options = builder.Configuration.GetSection(JWTSettings.DefaultSection).Get<JWTSettings>();
-            var jwtKey = options.Secret;
+            var jwtKey = options.JwtKey;
             var issuer = options.Issuer;
             var audience = options.Audience;
             o.RequireHttpsMetadata = true;
@@ -61,9 +60,9 @@ public static class Startup
     {
         services.AddSwaggerGen(c =>
         {
-            var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
-            var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
-            c.IncludeXmlComments(xmlPath);
+            //var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+            //var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+            //c.IncludeXmlComments(xmlPath);
             c.SwaggerDoc(
                 "v1",
                 new OpenApiInfo()
@@ -71,11 +70,11 @@ public static class Startup
                     Version = "v1",
                     Title = "QuizFlow.Api",
                     Description = "This is version 1.0",
-                    TermsOfService = new Uri("http://localhost:5004/"),
+                    TermsOfService = new Uri("http://localhost:7116/"),
                     Contact = new OpenApiContact()
                     {
                         Name = "Test contact",
-                        Url = new Uri("http://localhost:5004/"),
+                        Url = new Uri("http://localhost:7116/"),
                     },
                 }
             );

@@ -2,23 +2,19 @@
 
 namespace QuizIdentity.Domain.Settings;
 
-[JsonObject("jwtsettings")]
 public class JWTSettings
 {
     public const string DefaultSection = "JWT";
 
-    [JsonProperty("secret")]
-    public string Secret { get; set; }
+    public string JwtKey { get; set; }
 
-    [JsonProperty("issuer")]
     public string Issuer { get; set; }
 
-    [JsonProperty("audience")]
     public string Audience { get; set; }
 
-    [JsonProperty("expiry")]
+    public string Authority { get; set; }
+
     public int Expiry { get; set; }
 
-    [JsonProperty("refreshExpiry")]
     public int RefreshExpiry { get; set; }
 }
