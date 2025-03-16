@@ -5,6 +5,8 @@ namespace QuizIdentity.Domain.Settings;
 [JsonObject("jwtsettings")]
 public class JWTSettings
 {
+    public const string DefaultSection = "JWT";
+
     [JsonProperty("secret")]
     public string Secret { get; set; }
 

@@ -1,3 +1,4 @@
+using QuizIdenitity.Api;
 using QuizIdenitity.Api.Midllewares;
 using QuizIdentity.Application.Extensions;
 using QuizIdentity.Infrastructure.Identity.Extensions;
@@ -10,6 +11,9 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddIdentityInfrastructure();
 builder.Services.AddApplicationLayer();
 builder.Services.AddPersistenceInfrastructure(builder.Configuration);
+
+builder.Services.AddAuthenticationAndAuthorization(builder);
+builder.Services.AddSwagger();
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle

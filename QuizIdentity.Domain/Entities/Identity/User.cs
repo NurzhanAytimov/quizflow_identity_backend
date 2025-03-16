@@ -1,6 +1,4 @@
-﻿using Microsoft.AspNetCore.Identity;
-
-namespace QuizIdentity.Domain.Entities.Identity;
+﻿namespace QuizIdentity.Domain.Entities.Identity;
 
 public class User 
 {

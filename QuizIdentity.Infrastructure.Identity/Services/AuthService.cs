@@ -1,11 +1,11 @@
-﻿using System.Data.Entity;
-using System.Security.Claims;
+﻿using System.Security.Claims;
 using Microsoft.AspNetCore.Http;
 using QuizIdentity.Application.DTOs.Account.Response;
 using QuizIdentity.Application.Services.Interfaces;
 using QuizIdentity.Domain.Entities.Identity;
 using QuizIdentity.Infrastructure.Identity.Services.Interfaces;
 using QuizIdentity.Infrastructure.Persistence.Context;
+using Microsoft.EntityFrameworkCore;
 
 namespace QuizIdentity.Infrastructure.Identity.Services;
 
@@ -27,9 +27,13 @@ public class AuthService : IAuthService
         _httpContextAccessor = httpContextAccessor;
     }
 
-    public async Task<LoginResponseDto> Authenticate(string username, string password)
+    public async Task<LoginResponseDto> Authenticate(string email, string password)
     {
-        var user = await _context.Users.FirstOrDefaultAsync(u => u.UserName == username);
+        var user = await _context.Users
+            .Include(u => u.UserRoles)
+            .ThenInclude(u => u.Role)
+            .FirstOrDefaultAsync(u => u.Email == email);
+
         if (user == null) throw new KeyNotFoundException("Пользователь не найден!");
 
         var result = _passwordEncryptor.VerifyPassword(password, user.Password);
@@ -43,9 +47,9 @@ public class AuthService : IAuthService
             new Claim("UserId", user.Id.ToString()),
         };
 
-        foreach (var roleName in roles)
+        foreach (var roleNames in roles)
         {
-            claims.Add(new Claim(ClaimTypes.Role, roleName));
+            claims.Add(new Claim(ClaimTypes.Role, roleNames));
         }
 
         var accessToken = _tokenService.GenerateAccessToken(claims);
