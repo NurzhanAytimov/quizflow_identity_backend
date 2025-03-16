@@ -12,6 +12,8 @@ public class User
 
     public required string Password { get; set; }
 
+    public DateTimeOffset CreateDateUtch { get; set; }
+
     #region Navigation properties
 
     public ICollection<UserRole>? UserRoles { get; set; }
