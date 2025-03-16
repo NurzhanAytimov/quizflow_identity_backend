@@ -11,19 +11,28 @@ namespace QuizIdentity.Infrastructure.Identity.Services;
 
 public class TokenService : ITokenService
 {
-    private readonly JWTSettings _token;
+    public string _jwtKey;
 
-    public TokenService(IOptions<JWTSettings> token)
+    public string _issuer;
+
+    public string _audience;
+
+    public int _expiry;
+
+    public TokenService(IOptions<JWTSettings> options)
     {
-        _token = token.Value;
+        _jwtKey = options.Value.JwtKey;
+        _issuer = options.Value.Issuer;
+        _audience = options.Value.Audience;
+        _expiry = options.Value.Expiry;
     }
 
     public string GenerateAccessToken(IEnumerable<Claim> claims)
     {
-        var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_token.Secret));
+        var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwtKey));
         var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256Signature);
         var securityToken =
-            new JwtSecurityToken(_token.Issuer, _token.Audience, claims, null, DateTime.UtcNow.AddMinutes(_token.Expiry), credentials);
+            new JwtSecurityToken(_issuer, _audience, claims, null, DateTime.UtcNow.AddMinutes(_expiry), credentials);
         var token = new JwtSecurityTokenHandler().WriteToken(securityToken);
         return token;
     }
@@ -43,10 +52,10 @@ public class TokenService : ITokenService
             ValidateAudience = true,
             ValidateIssuer = true,
             ValidateIssuerSigningKey = true,
-            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_token.Secret)),
+            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwtKey)),
             ValidateLifetime = true,
-            ValidAudience = _token.Audience,
-            ValidIssuer = _token.Issuer
+            ValidAudience = _audience,
+            ValidIssuer = _issuer
         };
         var tokenHandler = new JwtSecurityTokenHandler();
         var claimsPrincipal = tokenHandler.ValidateToken(accessToken, tokenValidationParameters, out var securityToken);

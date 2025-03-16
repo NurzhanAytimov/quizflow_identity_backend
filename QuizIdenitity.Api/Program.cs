@@ -1,6 +1,7 @@
 using QuizIdenitity.Api;
 using QuizIdenitity.Api.Midllewares;
 using QuizIdentity.Application.Extensions;
+using QuizIdentity.Domain.Settings;
 using QuizIdentity.Infrastructure.Identity.Extensions;
 using QuizIdentity.Infrastructure.Persistence.Extensions;
 
@@ -14,6 +15,8 @@ builder.Services.AddPersistenceInfrastructure(builder.Configuration);
 
 builder.Services.AddAuthenticationAndAuthorization(builder);
 builder.Services.AddSwagger();
+
+builder.Services.Configure<JWTSettings>(builder.Configuration.GetSection("JWT"));
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
