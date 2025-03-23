@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using QuizIdentity.Application.DTOs.Account.Request;
 using QuizIdentity.Application.Features.Account.Commands.CreateAccount;
+using QuizIdentity.Application.Wrapers;
 using QuizIdentity.Infrastructure.Identity.Services.Interfaces;
 
 namespace QuizIdenitity.Api.Controllers;
@@ -35,6 +36,25 @@ public class AccountController : ControllerBase
     public async Task<IActionResult> Token([FromBody] LoginRequestDto dto)
     {
         return Ok(await _authService.Authenticate(dto.Email, dto.Password));
+    }
+
+    [HttpPost("refresh")]
+    [ProducesResponseType(typeof(Response<bool>), StatusCodes.Status200OK)]
+
+    public async Task<ActionResult<string>> RefreshToken()
+    {
+        if (!HttpContext.Request.Cookies.TryGetValue("refreshToken", out var refreshToken) || string.IsNullOrWhiteSpace(refreshToken))
+        {
+            return BadRequest("Токен обновления отсутствует или недействителен в файлах cookie!");
+        }
+
+        var response = await _authService.RefreshToken(refreshToken);
+        if (response == null)
+        {
+            return Unauthorized("Не валидный токен!");
+        }
+
+        return Ok(response);
     }
 
     [HttpGet("confirm-email")]

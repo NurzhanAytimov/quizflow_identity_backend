@@ -17,6 +17,7 @@
   <ItemGroup>
     <ProjectReference Include="..\QuizIdentity.Domain\QuizIdentity.Domain.csproj" />
     <ProjectReference Include="..\QuizIdentity.Infrastructure.Persistence\QuizIdentity.Infrastructure.Persistence.csproj" />
+    <ProjectReference Include="..\QuizIdentity.Infrastructure.Shared\QuizIdentity.Infrastructure.Shared.csproj" />
   </ItemGroup>
 
 </Project>

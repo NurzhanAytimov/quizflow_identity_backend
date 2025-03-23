@@ -67,4 +67,11 @@ public class EmailService : IEmailService
             _logger.LogError(ex, "Общая ошибка при отправке Email: {Message}", ex.Message);
         }
     }
+
+    public async Task SendEmailConfirmationAsync(string email, string confirmationLink)
+    {
+        var subject = "Подтверждение почты";
+        var body = $"Пожалуйста, подтвердите вашу почту, перейдя по <a href='{confirmationLink}'>ссылке</a>.";
+        await SendEmailAsync(email, body, subject);
+    }
 }

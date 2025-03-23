@@ -7,4 +7,6 @@ public interface IAuthService
     Task<LoginResponseDto> Authenticate(string username, string password);
 
     Task ConfirmEmailAsync(string email, string token);
+
+    Task<string> RefreshToken(string refreshToken);
 }

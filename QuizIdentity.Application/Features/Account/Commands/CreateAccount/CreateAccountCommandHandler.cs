@@ -4,6 +4,7 @@ using QuizIdentity.Application.Services.Interfaces;
 using QuizIdentity.Application.Wrapers;
 using QuizIdentity.Domain.Entities.Identity;
 using QuizIdentity.Infrastructure.Persistence.Context;
+using QuizIdentity.Infrastructure.Shared.Services.Interfaces;
 
 namespace QuizIdentity.Application.Features.Account.Commands.CreateAccount;
 
@@ -13,10 +14,13 @@ internal sealed class CreateAccountCommandHandler : IRequestHandler<CreateAccoun
 
     private readonly IPasswordEncryptor _passwordEncryptor;
 
-    public CreateAccountCommandHandler(ApplicationDbContext context, IPasswordEncryptor passwordEncryptor)
+    private readonly IEmailService _emailService;
+
+    public CreateAccountCommandHandler(ApplicationDbContext context, IPasswordEncryptor passwordEncryptor, IEmailService emailService)
     {
         _context = context;
         _passwordEncryptor = passwordEncryptor;
+        _emailService = emailService;
     }
 
     public async Task<Response<CreateLoginResponseDto>> Handle(CreateAccountCommand request, CancellationToken cancellationToken)
@@ -28,7 +32,8 @@ internal sealed class CreateAccountCommandHandler : IRequestHandler<CreateAccoun
             Email = request.Dto.Email,
             Password = password,
             IsDelete = false,
-            CreateDateUtch = DateTimeOffset.UtcNow
+            CreateDateUtch = DateTimeOffset.UtcNow,
+            EmailConfirmationToken = Guid.NewGuid().ToString()
         };
 
         await _context.Users.AddAsync(user);
