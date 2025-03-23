@@ -1,6 +1,5 @@
 ﻿using FluentValidation;
 using QuizIdentity.Application.DTOs.Account.Request;
-using QuizIdentity.Application.Features.Account.Commands.CreateAccount;
 
 namespace QuizIdentity.Application.Features.Account.Commands.Validation;
 

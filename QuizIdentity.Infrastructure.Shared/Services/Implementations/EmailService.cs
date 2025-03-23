@@ -21,8 +21,6 @@ public class EmailService : IEmailService
 
     private readonly ILogger<EmailService> _logger;
 
-    //private readonly string _emailFrom;
-
     public EmailService(IConfiguration configuration, ILogger<EmailService> logger)
     {
         var emailConfig = configuration.GetSection("EmailSettings");
@@ -72,6 +70,13 @@ public class EmailService : IEmailService
     {
         var subject = "Подтверждение почты";
         var body = $"Пожалуйста, подтвердите вашу почту, перейдя по <a href='{confirmationLink}'>ссылке</a>.";
+        await SendEmailAsync(email, body, subject);
+    }
+
+    public async Task SendPasswordResetAsync(string email, string resetLink)
+    {
+        var subject = "Сброс пароля";
+        var body = $"Для сброса пароля перейдите по <a href='{resetLink}'>ссылке</a>.";
         await SendEmailAsync(email, body, subject);
     }
 }

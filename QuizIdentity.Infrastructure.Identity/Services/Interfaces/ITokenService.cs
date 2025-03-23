@@ -9,4 +9,6 @@ public interface ITokenService
     string GenerateRefreshToken();
 
     ClaimsPrincipal GetPrincipalFromExpiredToken(string accessToken);
+
+    string GeneratePasswordResetToken();
 }

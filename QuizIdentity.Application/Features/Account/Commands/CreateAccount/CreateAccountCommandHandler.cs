@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using Microsoft.Extensions.Configuration;
 using QuizIdentity.Application.DTOs.Account.Response;
 using QuizIdentity.Application.Services.Interfaces;
 using QuizIdentity.Application.Wrapers;
@@ -16,11 +17,15 @@ internal sealed class CreateAccountCommandHandler : IRequestHandler<CreateAccoun
 
     private readonly IEmailService _emailService;
 
-    public CreateAccountCommandHandler(ApplicationDbContext context, IPasswordEncryptor passwordEncryptor, IEmailService emailService)
+    private readonly string _url;
+
+    public CreateAccountCommandHandler(ApplicationDbContext context, IPasswordEncryptor passwordEncryptor,
+        IEmailService emailService, IConfiguration configuration)
     {
         _context = context;
         _passwordEncryptor = passwordEncryptor;
         _emailService = emailService;
+        _url = configuration[$"EmailSettings:BaseUrl"];
     }
 
     public async Task<Response<CreateLoginResponseDto>> Handle(CreateAccountCommand request, CancellationToken cancellationToken)
@@ -38,6 +43,8 @@ internal sealed class CreateAccountCommandHandler : IRequestHandler<CreateAccoun
 
         await _context.Users.AddAsync(user);
         await _context.SaveChangesAsync(cancellationToken);
+
+        await _emailService.SendEmailConfirmationAsync(user.Email, _url);
 
         var result = new CreateLoginResponseDto(user);
         return new Response<CreateLoginResponseDto>(result, "Аккаунт успешно создан");
