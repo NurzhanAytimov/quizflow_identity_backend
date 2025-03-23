@@ -1,4 +1,6 @@
-﻿namespace QuizIdentity.Domain.Entities.Identity;
+﻿using QuizIdentity.Domain.Entities.Subscriptions;
+
+namespace QuizIdentity.Domain.Entities.Identity;
 
 public class User 
 {
@@ -19,6 +21,8 @@ public class User
     public ICollection<UserRole>? UserRoles { get; set; }
 
     public UserToken? UserToken { get; set; }
+
+    public Subscription? Subscription { get; set; }
 
     #endregion
 }

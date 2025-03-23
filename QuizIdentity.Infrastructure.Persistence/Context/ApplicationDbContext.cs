@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using QuizIdentity.Domain.Entities.Domain;
 using QuizIdentity.Domain.Entities.Identity;
+using QuizIdentity.Domain.Entities.Subscriptions;
 
 namespace QuizIdentity.Infrastructure.Persistence.Context;
 
@@ -26,6 +27,12 @@ public class ApplicationDbContext : DbContext
     public DbSet<UserRole> UserRoles { get; set; }
 
     public DbSet<UserToken> UserTokens { get; set; }
+
+    #endregion
+
+    #region Subscriptions
+
+    public DbSet<Subscription> Subscriptions { get; set; }
 
     #endregion
 
