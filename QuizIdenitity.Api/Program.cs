@@ -4,6 +4,7 @@ using QuizIdentity.Application.Extensions;
 using QuizIdentity.Domain.Settings;
 using QuizIdentity.Infrastructure.Identity.Extensions;
 using QuizIdentity.Infrastructure.Persistence.Extensions;
+using QuizIdentity.Infrastructure.Shared.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -12,6 +13,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddIdentityInfrastructure();
 builder.Services.AddApplicationLayer();
 builder.Services.AddPersistenceInfrastructure(builder.Configuration);
+builder.Services.AddSharedInfrastructure();
 
 builder.Services.AddAuthenticationAndAuthorization(builder);
 builder.Services.AddSwagger();
