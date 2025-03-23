@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
     <TargetFramework>net8.0</TargetFramework>
@@ -24,6 +24,7 @@
     <ProjectReference Include="..\QuizIdentity.Domain\QuizIdentity.Domain.csproj" />
     <ProjectReference Include="..\QuizIdentity.Infrastructure.Identity\QuizIdentity.Infrastructure.Identity.csproj" />
     <ProjectReference Include="..\QuizIdentity.Infrastructure.Persistence\QuizIdentity.Infrastructure.Persistence.csproj" />
+    <ProjectReference Include="..\QuizIdentity.Infrastructure.Shared\QuizIdentity.Infrastructure.Shared.csproj" />
   </ItemGroup>
 
 </Project>
