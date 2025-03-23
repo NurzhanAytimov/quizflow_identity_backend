@@ -6,6 +6,7 @@ using QuizIdentity.Domain.Entities.Identity;
 using QuizIdentity.Infrastructure.Identity.Services.Interfaces;
 using QuizIdentity.Infrastructure.Persistence.Context;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 
 namespace QuizIdentity.Infrastructure.Identity.Services;
 
@@ -90,5 +91,17 @@ public class AuthService : IAuthService
             Email = user.Email,
             Roles = roles
         };
+    }
+
+    public async Task ConfirmEmailAsync(string email, string token)
+    {
+        var user = await _context.Users.FirstOrDefaultAsync(u => u.Email == email);
+        if (user == null) throw new KeyNotFoundException("Пользователь не найден!");
+
+        if (user.EmailConfirmationToken != token) throw new SecurityTokenException("Неверный токен подтверждения почты");
+
+        user.IsEmailConfirmed = true;
+        user.EmailConfirmationToken = null;
+        await _context.SaveChangesAsync();
     }
 }

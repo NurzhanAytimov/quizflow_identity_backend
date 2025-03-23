@@ -16,6 +16,14 @@ public class User
 
     public DateTimeOffset CreateDateUtch { get; set; }
 
+    public string? EmailConfirmationToken { get; set; }
+
+    public bool IsEmailConfirmed { get; set; } = false;
+
+    public string? PasswordResetToken { get; set; }
+
+    public DateTimeOffset? PasswordResetTokenExpiry { get; set; }
+
     #region Navigation properties
 
     public ICollection<UserRole>? UserRoles { get; set; }

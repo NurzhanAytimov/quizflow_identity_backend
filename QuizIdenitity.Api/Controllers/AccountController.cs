@@ -36,4 +36,11 @@ public class AccountController : ControllerBase
     {
         return Ok(await _authService.Authenticate(dto.Email, dto.Password));
     }
+
+    [HttpGet("confirm-email")]
+    public async Task<IActionResult> ConfirmEmail(string email, string token)
+    {
+        await _authService.ConfirmEmailAsync(email, token);
+        return Ok("Почта успешно подтверждена");
+    }
 }

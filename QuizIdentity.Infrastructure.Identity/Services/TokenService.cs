@@ -65,4 +65,20 @@ public class TokenService : ITokenService
             throw new SecurityTokenException("invalid token");
         return claimsPrincipal;
     }
+
+    public string GenerateEmailConfirmationToken()
+    {
+        var randomNumbers = new byte[32];
+        using var randomNumberGenerator = RandomNumberGenerator.Create();
+        randomNumberGenerator.GetBytes(randomNumbers);
+        return Convert.ToBase64String(randomNumbers);
+    }
+
+    public string GeneratePasswordResetToken()
+    {
+        var randomNumbers = new byte[32];
+        using var randomNumberGenerator = RandomNumberGenerator.Create();
+        randomNumberGenerator.GetBytes(randomNumbers);
+        return Convert.ToBase64String(randomNumbers);
+    }
 }
