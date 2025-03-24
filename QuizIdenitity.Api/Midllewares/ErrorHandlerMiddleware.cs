@@ -50,6 +50,10 @@ public class ErrorHandlerMiddleware
                     response.StatusCode = (int)HttpStatusCode.Forbidden;
                     break;
 
+                case InvalidOperationException e:
+                    response.StatusCode = (int)HttpStatusCode.Conflict; 
+                    break;
+
                 default:
                     response.StatusCode = (int)HttpStatusCode.InternalServerError;
                     break;

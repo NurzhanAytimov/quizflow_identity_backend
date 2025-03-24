@@ -1,4 +1,5 @@
-﻿using MediatR;
+﻿using System.Data.Entity;
+using MediatR;
 using Microsoft.Extensions.Configuration;
 using QuizIdentity.Application.DTOs.Account.Response;
 using QuizIdentity.Application.Services.Interfaces;
@@ -31,6 +32,9 @@ internal sealed class CreateAccountCommandHandler : IRequestHandler<CreateAccoun
     public async Task<Response<CreateLoginResponseDto>> Handle(CreateAccountCommand request, CancellationToken cancellationToken)
     {
         string password = _passwordEncryptor.GeneratePassword(request.Dto.Password);
+
+        var existingUser = _context.Users.FirstOrDefault(u => u.Email == request.Dto.Email);
+        if (existingUser != null) throw new InvalidOperationException("Пользователь с таким email уже существует");
 
         var user = new User
         {
